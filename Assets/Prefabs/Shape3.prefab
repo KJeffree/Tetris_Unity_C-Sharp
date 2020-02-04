@@ -375,7 +375,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -393,8 +393,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafe86c22779a408d9dba3b49f804c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
-  width: 3
+  widthsFromPivot: 03000000010000000100000002000000
+  widthsBeforePivot: 00000000010000000200000000000000
 --- !u!1 &5170273231761988335
 GameObject:
   m_ObjectHideFlags: 0
