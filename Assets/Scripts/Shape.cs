@@ -20,7 +20,7 @@ public class Shape : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow)){
             float xDifference = Input.GetKeyDown(KeyCode.RightArrow) ? 0.5f : -0.5f;
             float currentXPosition = transform.position.x;
-            float newXPosition = Mathf.Clamp(currentXPosition + xDifference, 0.5f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 5f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
+            float newXPosition = clampXPositionWithinGameSpace(currentXPosition + xDifference);
             Vector3 newPosition = new Vector3(newXPosition, transform.position.y, transform.position.z);
             transform.position = newPosition;
         }
@@ -30,6 +30,14 @@ public class Shape : MonoBehaviour
             originalRotation.z -= 90;
             transform.rotation = Quaternion.Euler(originalRotation);
             rotation = rotation < 3 ? rotation + 1 : 0;
+            float xPosition = clampXPositionWithinGameSpace(transform.position.x);
+            Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
+            transform.position = newPosition;
         }
+    }
+
+    private float clampXPositionWithinGameSpace(float xPosition)
+    {
+        return Mathf.Clamp(xPosition, 0.5f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 5f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
     }
 }
