@@ -11,7 +11,26 @@ public class Shape : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(BeginMovement());   
+    }
+
+    IEnumerator BeginMovement()
+    {
+        yield return new WaitForSeconds(1);
+        InvokeRepeating("ShapeMovementDown", 0, 1f);
+    }
+
+    private void ShapeMovementDown()
+    {
+        float currentYPosition = transform.position.y;
+        float newYPosition = currentYPosition - 0.5f;
+        Vector3 newPosition = new Vector3(transform.position.x, newYPosition, transform.position.z);
+        transform.position = newPosition;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Destroy(GetComponent<Shape>());
     }
 
     // Update is called once per frame
@@ -26,10 +45,7 @@ public class Shape : MonoBehaviour
         }
 
         if(Input.GetKeyDown(KeyCode.UpArrow)){
-            Vector3 originalRotation = transform.rotation.eulerAngles;
-            originalRotation.z -= 90;
-            transform.rotation = Quaternion.Euler(originalRotation);
-            rotation = rotation < 3 ? rotation + 1 : 0;
+            RotateShape();
             float xPosition = clampXPositionWithinGameSpace(transform.position.x);
             Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
             transform.position = newPosition;
@@ -39,5 +55,22 @@ public class Shape : MonoBehaviour
     private float clampXPositionWithinGameSpace(float xPosition)
     {
         return Mathf.Clamp(xPosition, 0.5f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 5f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
+    }
+
+    private void RotateShape()
+    {
+        Vector3 originalRotation = transform.rotation.eulerAngles;
+        originalRotation.z -= 90;
+        transform.rotation = Quaternion.Euler(originalRotation);
+        rotation = rotation < 3 ? rotation + 1 : 0;
+        AlterShapeCollider();
+    }
+
+    private void AlterShapeCollider()
+    {
+        foreach (Box child in GetComponentsInChildren<Box>())
+        {
+            child.alterCollider(rotation);
+        }
     }
 }

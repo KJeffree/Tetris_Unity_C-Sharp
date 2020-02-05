@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5170273230540130142}
   - component: {fileID: 5170273230540130136}
   - component: {fileID: 5170273230540130137}
+  - component: {fileID: 6162117918965298457}
   m_Layer: 0
   m_Name: brickRed04
   m_TagString: Untagged
@@ -108,6 +109,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &6162117918965298457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170273230540130143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5170273230622711697
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +132,7 @@ GameObject:
   - component: {fileID: 5170273230622711696}
   - component: {fileID: 5170273230622711698}
   - component: {fileID: 5170273230622711699}
+  - component: {fileID: 2819584506696516331}
   m_Layer: 0
   m_Name: brickRed04 (2)
   m_TagString: Untagged
@@ -216,6 +230,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &2819584506696516331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170273230622711697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5170273231337478619
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,6 +253,7 @@ GameObject:
   - component: {fileID: 5170273231337478618}
   - component: {fileID: 5170273231337478596}
   - component: {fileID: 5170273231337478597}
+  - component: {fileID: 5938581527011899936}
   m_Layer: 0
   m_Name: brickRed04 (1)
   m_TagString: Untagged
@@ -324,6 +351,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &5938581527011899936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170273231337478619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5170273231481900404
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,6 +445,7 @@ GameObject:
   - component: {fileID: 5170273231761988334}
   - component: {fileID: 5170273231761988328}
   - component: {fileID: 5170273231761988329}
+  - component: {fileID: 404469726388855099}
   m_Layer: 0
   m_Name: brickRed04 (3)
   m_TagString: Untagged
@@ -503,3 +543,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &404469726388855099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170273231761988335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

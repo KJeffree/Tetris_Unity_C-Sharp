@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 3675003768089906519}
   - component: {fileID: 3675003768089906517}
   - component: {fileID: 3675003768089906518}
+  - component: {fileID: 1798097158126995411}
   m_Layer: 0
   m_Name: brickGreen05 (4)
   m_TagString: Untagged
@@ -179,6 +180,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &1798097158126995411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675003768089906536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3675003768273183422
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,6 +203,7 @@ GameObject:
   - component: {fileID: 3675003768273183421}
   - component: {fileID: 3675003768273183420}
   - component: {fileID: 3675003768273183419}
+  - component: {fileID: 8910793537425121703}
   m_Layer: 0
   m_Name: brickGreen05 (1)
   m_TagString: Untagged
@@ -287,6 +301,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &8910793537425121703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675003768273183422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3675003768505429205
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,6 +324,7 @@ GameObject:
   - component: {fileID: 3675003768505429204}
   - component: {fileID: 3675003768505429202}
   - component: {fileID: 3675003768505429203}
+  - component: {fileID: 621708026582757021}
   m_Layer: 0
   m_Name: brickGreen05 (2)
   m_TagString: Untagged
@@ -395,6 +422,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &621708026582757021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675003768505429205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3675003768835621497
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,6 +445,7 @@ GameObject:
   - component: {fileID: 3675003768835621496}
   - component: {fileID: 3675003768835621478}
   - component: {fileID: 3675003768835621479}
+  - component: {fileID: 5628456920539681986}
   m_Layer: 0
   m_Name: brickGreen05 (3)
   m_TagString: Untagged
@@ -503,3 +543,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.43846154}
   m_EdgeRadius: 0
+--- !u!114 &5628456920539681986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675003768835621497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749900c5967604161aa1b6f0c5cf41e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
