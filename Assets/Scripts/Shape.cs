@@ -7,6 +7,8 @@ public class Shape : MonoBehaviour
     [SerializeField] int[] widthsFromPivot;
     [SerializeField] int[] widthsBeforePivot;
 
+    bool stopMovement = false;
+
     int rotation = 0;
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,22 @@ public class Shape : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(GetComponent<Shape>());
+        StartCoroutine(StopMovement());
+        stopMovement = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        stopMovement = false;
+    }
+
+    IEnumerator StopMovement()
+    {
+        yield return new WaitForSeconds(0.9f);
+        if (stopMovement)
+        {
+            Destroy(GetComponent<Shape>());
+        }
     }
 
     // Update is called once per frame
