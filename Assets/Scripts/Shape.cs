@@ -8,6 +8,7 @@ public class Shape : MonoBehaviour
     [SerializeField] int[] widthsBeforePivot;
 
     bool stopMovement = false;
+    bool colliding = false;
 
     int rotation = 0;
     // Start is called before the first frame update
@@ -34,11 +35,13 @@ public class Shape : MonoBehaviour
     {
         StartCoroutine(StopMovement());
         stopMovement = true;
+        colliding = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         stopMovement = false;
+        colliding = false;
     }
 
     IEnumerator StopMovement()
@@ -64,14 +67,15 @@ public class Shape : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.UpArrow)){
             RotateShape();
             float xPosition = clampXPositionWithinGameSpace(transform.position.x);
-            Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
+            float yPosition = transform.position.y;
+            Vector3 newPosition = new Vector3(xPosition, yPosition, transform.position.z);
             transform.position = newPosition;
         }
     }
 
     private float clampXPositionWithinGameSpace(float xPosition)
     {
-        return Mathf.Clamp(xPosition, 0.5f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 5f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
+        return Mathf.Clamp(xPosition, 0.25f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 4.75f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
     }
 
     private void RotateShape()
