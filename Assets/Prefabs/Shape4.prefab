@@ -434,6 +434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   widthsFromPivot: 01000000020000000000000002000000
   widthsBeforePivot: 00000000020000000100000002000000
+  widthBelowPivot: 02000000010000000200000000000000
 --- !u!1 &7863691429199444963
 GameObject:
   m_ObjectHideFlags: 0

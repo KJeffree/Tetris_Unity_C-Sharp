@@ -6,6 +6,7 @@ public class Shape : MonoBehaviour
 {
     [SerializeField] int[] widthsFromPivot;
     [SerializeField] int[] widthsBeforePivot;
+    [SerializeField] int[] widthBelowPivot;
 
     bool stopMovement = false;
     bool colliding = false;
@@ -60,16 +61,14 @@ public class Shape : MonoBehaviour
             float xDifference = Input.GetKeyDown(KeyCode.RightArrow) ? 0.5f : -0.5f;
             float currentXPosition = transform.position.x;
             float newXPosition = clampXPositionWithinGameSpace(currentXPosition + xDifference);
-            Vector3 newPosition = new Vector3(newXPosition, transform.position.y, transform.position.z);
-            transform.position = newPosition;
+            MoveShape(newXPosition, transform.position.y, transform.position.z);
         }
 
         if(Input.GetKeyDown(KeyCode.UpArrow)){
             RotateShape();
             float xPosition = clampXPositionWithinGameSpace(transform.position.x);
             float yPosition = transform.position.y;
-            Vector3 newPosition = new Vector3(xPosition, yPosition, transform.position.z);
-            transform.position = newPosition;
+            MoveShape(xPosition, yPosition, transform.position.z);
         }
     }
 
@@ -93,5 +92,11 @@ public class Shape : MonoBehaviour
         {
             child.alterCollider(rotation);
         }
+    }
+
+    private void MoveShape(float xPosition, float yPosition, float zPosition)
+    {
+        Vector3 newPosition = new Vector3(xPosition, yPosition, zPosition);
+        transform.position = newPosition;
     }
 }
