@@ -11018,6 +11018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d960c0ee2047fba4540820adea0d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxesInColumn: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!4 &1535184716
 Transform:
   m_ObjectHideFlags: 0

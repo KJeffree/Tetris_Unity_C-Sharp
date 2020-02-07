@@ -12,10 +12,13 @@ public class Shape : MonoBehaviour
     bool colliding = false;
 
     int rotation = 0;
+
+    GameSession gameSession;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(BeginMovement());   
+        StartCoroutine(BeginMovement());
+        gameSession = FindObjectOfType<GameSession>();
     }
 
     IEnumerator BeginMovement()
@@ -37,6 +40,7 @@ public class Shape : MonoBehaviour
         StartCoroutine(StopMovement());
         stopMovement = true;
         colliding = true;
+        gameSession.CountBoxesInColumns();
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -83,7 +87,45 @@ public class Shape : MonoBehaviour
         originalRotation.z -= 90;
         transform.rotation = Quaternion.Euler(originalRotation);
         rotation = rotation < 3 ? rotation + 1 : 0;
+        CalculateAnyOverlapWithAnotherShape();
         AlterShapeCollider();
+    }
+
+    private int CalculateAnyOverlapWithAnotherShape()
+    {
+        List<float> boxXCoordinatesOfShape = new List<float>();
+        float shapeXCoordinate = transform.position.x;
+        for (int i = 0; i < widthsBeforePivot[rotation]; i++)
+        {
+            boxXCoordinatesOfShape.Add(shapeXCoordinate - 0.5f * (i + 1));
+        }
+        for (int i = 0; i < widthsFromPivot[rotation]; i++)
+        {
+            boxXCoordinatesOfShape.Add(shapeXCoordinate + 0.5f * i);
+        }
+        Debug.Log(boxXCoordinatesOfShape.Count);
+        float shapeLowestYCoordinate = transform.position.y - widthBelowPivot[rotation] * 0.5f;
+
+        int largestOverlap = 0;
+
+        foreach (float coordinate in boxXCoordinatesOfShape)
+        {
+            int indexOfCoordinate = (int)(coordinate / 0.5f);
+            Debug.Log(indexOfCoordinate);
+
+            float heightOfCurrentColumn = 0.5f + gameSession.GetBoxesInColumn()[indexOfCoordinate] * 0.5f;
+
+            if (heightOfCurrentColumn > shapeLowestYCoordinate)
+            {
+                int overlap = (int)(heightOfCurrentColumn - shapeLowestYCoordinate / 0.5f);
+                if (overlap > largestOverlap)
+                {
+                    largestOverlap = overlap;
+                }
+            }
+        }
+        Debug.Log(largestOverlap);
+        return largestOverlap;
     }
 
     private void AlterShapeCollider()
