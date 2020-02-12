@@ -33,6 +33,8 @@ public class Shape : MonoBehaviour
         float newYPosition = currentYPosition - 0.5f;
         Vector3 newPosition = new Vector3(transform.position.x, newYPosition, transform.position.z);
         transform.position = newPosition;
+        // int overlap = CalculateAnyOverlapWithAnotherShape();
+        // MoveShape(transform.position.x, transform.position.y + overlap, transform.position.z);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -87,50 +89,84 @@ public class Shape : MonoBehaviour
         originalRotation.z -= 90;
         transform.rotation = Quaternion.Euler(originalRotation);
         rotation = rotation < 3 ? rotation + 1 : 0;
-        CalculateAnyOverlapWithAnotherShape();
+        int overlap = CalculateAnyOverlapWithAnotherShape();
+        MoveShape(transform.position.x, transform.position.y + overlap, transform.position.z);
         AlterShapeCollider();
     }
 
-    private int CalculateAnyOverlapWithAnotherShape()
-    {
-        List<float> boxXCoordinatesOfShape = new List<float>();
-        float shapeXCoordinate = transform.position.x;
-        for (int i = 0; i < widthsBeforePivot[rotation]; i++)
+    private int CalculateAnyOverlapWithAnotherShape(){
+        Square[] squares = GetComponentsInChildren<Square>();
+        int width = widthsBeforePivot[rotation] + widthsFromPivot[rotation];
+        float[] lowestYCoordinatesOfShape = new float[width];
+        float startingXCoordinate = transform.position.x - (widthsBeforePivot[rotation] * 0.5f);
+        for (int i = 0; i < lowestYCoordinatesOfShape.Length; i++)
         {
-            boxXCoordinatesOfShape.Add(shapeXCoordinate - 0.5f * (i + 1));
+            lowestYCoordinatesOfShape[i] = 10;
         }
-        for (int i = 0; i < widthsFromPivot[rotation]; i++)
-        {
-            boxXCoordinatesOfShape.Add(shapeXCoordinate + 0.5f * i);
-        }
-        Debug.Log(boxXCoordinatesOfShape.Count);
-        float shapeLowestYCoordinate = transform.position.y - widthBelowPivot[rotation] * 0.5f;
-
-        int largestOverlap = 0;
-
-        foreach (float coordinate in boxXCoordinatesOfShape)
-        {
-            int indexOfCoordinate = (int)(coordinate / 0.5f);
-            Debug.Log(indexOfCoordinate);
-
-            float heightOfCurrentColumn = 0.5f + gameSession.GetBoxesInColumn()[indexOfCoordinate] * 0.5f;
-
-            if (heightOfCurrentColumn > shapeLowestYCoordinate)
-            {
-                int overlap = (int)(heightOfCurrentColumn - shapeLowestYCoordinate / 0.5f);
-                if (overlap > largestOverlap)
-                {
-                    largestOverlap = overlap;
-                }
+        foreach (Square square in squares){
+            int distanceFromStartingCoordinate = (int)((square.GetXCoordinate() - startingXCoordinate) / 0.5f);
+            if (square.GetYCoordinate() < lowestYCoordinatesOfShape[distanceFromStartingCoordinate]){
+                lowestYCoordinatesOfShape[distanceFromStartingCoordinate] = square.GetYCoordinate();
             }
+        }
+        int counter = 0;
+        int largestOverlap = 0;
+        while (counter < width)
+        {
+            float currentXCoordinate = startingXCoordinate + (counter * 0.5f);
+            int indexPosition = (int)(currentXCoordinate / 0.5f);
+            int numberOfBoxes = gameSession.GetBoxesInColumn(indexPosition);
+            float highestYCoordinate = numberOfBoxes * 0.5f + 0.5f;
+            if (highestYCoordinate > lowestYCoordinatesOfShape[counter])
+            {
+                float difference = highestYCoordinate - lowestYCoordinatesOfShape[counter] - 0.5f;
+                int overlap = difference > 0 ? (int)(difference / 0.5f) : 0;
+                largestOverlap = overlap > largestOverlap ? overlap : largestOverlap;
+            }
+            counter++;
         }
         Debug.Log(largestOverlap);
         return largestOverlap;
+
     }
+
+    // private int CalculateAnyOverlapWithAnotherShape()
+    // {
+    //     List<float> boxXCoordinatesOfShape = new List<float>();
+    //     float shapeXCoordinate = transform.position.x;
+    //     for (int i = 0; i < widthsBeforePivot[rotation]; i++)
+    //     {
+    //         boxXCoordinatesOfShape.Add(shapeXCoordinate - 0.5f * (i + 1));
+    //     }
+    //     for (int i = 0; i < widthsFromPivot[rotation]; i++)
+    //     {
+    //         boxXCoordinatesOfShape.Add(shapeXCoordinate + 0.5f * i);
+    //     }
+    //     float shapeLowestYCoordinate = transform.position.y - widthBelowPivot[rotation] * 0.5f;
+
+    //     int largestOverlap = 0;
+
+    //     foreach (float coordinate in boxXCoordinatesOfShape)
+    //     {
+    //         int indexOfCoordinate = (int)(coordinate / 0.5f);
+
+    //         float heightOfCurrentColumn = 0.5f + gameSession.GetBoxesInColumn()[indexOfCoordinate] * 0.5f;
+
+    //         if (heightOfCurrentColumn > shapeLowestYCoordinate)
+    //         {
+    //             int overlap = (int)(heightOfCurrentColumn - shapeLowestYCoordinate / 0.5f);
+    //             if (overlap > largestOverlap)
+    //             {
+    //                 largestOverlap = overlap;
+    //             }
+    //         }
+    //     }
+    //     return largestOverlap;
+    // }
 
     private void AlterShapeCollider()
     {
-        foreach (Box child in GetComponentsInChildren<Box>())
+        foreach (Square child in GetComponentsInChildren<Square>())
         {
             child.alterCollider(rotation);
         }

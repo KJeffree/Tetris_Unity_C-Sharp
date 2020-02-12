@@ -17,19 +17,19 @@ public class GameSession : MonoBehaviour
         
     }
 
-    public int[] GetBoxesInColumn()
+    public int GetBoxesInColumn(int indexPosition)
     {
-        return boxesInColumn;
+        return boxesInColumn[indexPosition];
     }
 
     public void CountBoxesInColumns()
     {
-        Box[] boxes = FindObjectsOfType<Box>();
+        Square[] boxes = FindObjectsOfType<Square>();
         float xCoordinate = 0.5f;
         for (int i = 0; i < boxesInColumn.Length; i++)
         {
             boxesInColumn[i] = 0;
-            foreach (Box box in boxes)
+            foreach (Square box in boxes)
             {
                 if (box.transform.position.x == xCoordinate)
                 {

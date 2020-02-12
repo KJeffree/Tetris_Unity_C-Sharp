@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box : MonoBehaviour
+public class Square : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,6 +14,15 @@ public class Box : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public float GetXCoordinate(){
+        // Debug.Log(transform.position.x);
+        return transform.position.x;
+    }
+
+    public float GetYCoordinate(){
+        return transform.position.y;
     }
 
     public void alterCollider(int rotation)
