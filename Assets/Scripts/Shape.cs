@@ -33,8 +33,8 @@ public class Shape : MonoBehaviour
         float newYPosition = currentYPosition - 0.5f;
         Vector3 newPosition = new Vector3(transform.position.x, newYPosition, transform.position.z);
         transform.position = newPosition;
-        // int overlap = CalculateAnyOverlapWithAnotherShape();
-        // MoveShape(transform.position.x, transform.position.y + overlap, transform.position.z);
+        int overlap = CalculateAnyOverlapWithAnotherShape();
+        MoveShape(transform.position.x, transform.position.y + (overlap * 0.5f), transform.position.z);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,7 +42,6 @@ public class Shape : MonoBehaviour
         StartCoroutine(StopMovement());
         stopMovement = true;
         colliding = true;
-        gameSession.CountBoxesInColumns();
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -57,6 +56,7 @@ public class Shape : MonoBehaviour
         if (stopMovement)
         {
             Destroy(GetComponent<Shape>());
+            gameSession.CountBoxesInColumns();
         }
     }
 
@@ -90,7 +90,7 @@ public class Shape : MonoBehaviour
         transform.rotation = Quaternion.Euler(originalRotation);
         rotation = rotation < 3 ? rotation + 1 : 0;
         int overlap = CalculateAnyOverlapWithAnotherShape();
-        MoveShape(transform.position.x, transform.position.y + overlap, transform.position.z);
+        MoveShape(transform.position.x, transform.position.y + (overlap * 0.5f), transform.position.z);
         AlterShapeCollider();
     }
 
@@ -119,13 +119,12 @@ public class Shape : MonoBehaviour
             float highestYCoordinate = numberOfBoxes * 0.5f + 0.5f;
             if (highestYCoordinate > lowestYCoordinatesOfShape[counter])
             {
-                float difference = highestYCoordinate - lowestYCoordinatesOfShape[counter] - 0.5f;
-                int overlap = difference > 0 ? (int)(difference / 0.5f) : 0;
+                float difference = highestYCoordinate - lowestYCoordinatesOfShape[counter];
+                int overlap = (int)(difference / 0.5f);
                 largestOverlap = overlap > largestOverlap ? overlap : largestOverlap;
             }
             counter++;
         }
-        Debug.Log(largestOverlap);
         return largestOverlap;
 
     }
