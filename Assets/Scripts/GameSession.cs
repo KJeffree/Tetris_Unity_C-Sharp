@@ -42,8 +42,22 @@ public class GameSession : MonoBehaviour
         {
             int xIndexPosition = (int)((square.GetXCoordinate() - xCoordinateOffset) / 0.5f);
             int yIndexPosition = (int)((square.GetYCoordinate() - yCoordinateOffset) / 0.5f);
+            Debug.Log("x coordinate: " + square.GetXCoordinate());
+            Debug.Log("y coordinate: " + square.GetYCoordinate());
             positionsOfSquares[xIndexPosition][yIndexPosition] = 1;
         }
+
+        Debug.Log(positionsOfSquares[0][0]);
+        Debug.Log(positionsOfSquares[1][0]);
+        Debug.Log(positionsOfSquares[2][0]);
+        Debug.Log(positionsOfSquares[3][0]);
+        Debug.Log(positionsOfSquares[4][0]);
+        Debug.Log(positionsOfSquares[5][0]);
+        Debug.Log(positionsOfSquares[6][0]);
+        Debug.Log(positionsOfSquares[7][0]);
+        Debug.Log(positionsOfSquares[8][0]);
+        Debug.Log(positionsOfSquares[9][0]);
+
     }
 
     public Shape GetRandomShape()
@@ -60,6 +74,10 @@ public class GameSession : MonoBehaviour
 
     public int GetStatusOfPositionInGame(int xIndex, int yIndex)
     {
+        if (xIndex < 0 || yIndex < 0)
+        {
+            return -1;
+        }
         return positionsOfSquares[xIndex][yIndex];
     }
 }

@@ -29,11 +29,9 @@ public class Shape : MonoBehaviour
     private void ShapeMovementDown()
     {
         float currentYPosition = transform.position.y;
-        float newYPosition = currentYPosition - 0.5f;
-        Vector3 newPosition = new Vector3(transform.position.x, newYPosition, transform.position.z);
-        transform.position = newPosition;
-        int overlap = CalculateAnyOverlapWithAnotherShape();
-        MoveShape(transform.position.x, transform.position.y + (overlap * 0.5f), transform.position.z);
+        int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, -0.5f);
+        float newYPosition = currentYPosition - 0.5f + (overlap * 0.5f);
+        MoveShape(transform.position.x, newYPosition, transform.position.z);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -64,24 +62,56 @@ public class Shape : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow)){
             float xDifference = Input.GetKeyDown(KeyCode.RightArrow) ? 0.5f : -0.5f;
-            CalculateAnyOverlapWithAnotherShape();
+            int overlap = CalculateAnyOverlapWithAnotherShape(xDifference, 0.0f);
             float currentXPosition = transform.position.x;
             float newXPosition = clampXPositionWithinGameSpace(currentXPosition + xDifference);
-            MoveShape(newXPosition, transform.position.y, transform.position.z);
-            if (CalculateAnyOverlapWithAnotherShape() > 0)
-            {
-                int overlap = CalculateAnyOverlapWithAnotherShape();
-                MoveShape(transform.position.x  - (overlap * xDifference), transform.position.y, transform.position.z);
-            }
+            MoveShape(newXPosition - (overlap * xDifference), transform.position.y, transform.position.z);
         }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow)){
+        if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
             RotateShape();
             float xPosition = clampXPositionWithinGameSpace(transform.position.x);
             float yPosition = transform.position.y;
             MoveShape(xPosition, yPosition, transform.position.z);
         }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            MoveShapeFullyDown();
+        }
     }
+
+    private void MoveShapeFullyDown()
+    {
+        float yDifference = -0.5f;
+        bool looping = true;
+        while (looping)
+        {
+            int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, yDifference);
+            // Debug.Log("y difference start of loop: " + yDifference);
+            // Debug.Log(overlap);
+            if (overlap == 0 && (transform.position.y + yDifference - (0.5f * widthBelowPivot[rotation])) == 0.75f)
+            {
+                looping = false;
+            }
+            if (overlap != 0)
+            {
+                looping = false;
+                yDifference += 0.5f;
+            } else {
+                yDifference -= 0.5f;
+            }
+
+        }
+        // Debug.Log("y difference end of loop: " + yDifference);
+
+        MoveShape(transform.position.x, transform.position.y + yDifference, transform.position.z);
+        CancelInvoke("ShapeMovementDown");
+        // gameSession.CountPositionsOfSquares();
+    }
+
+
 
     private float clampXPositionWithinGameSpace(float xPosition)
     {
@@ -99,16 +129,19 @@ public class Shape : MonoBehaviour
         AlterShapeCollider();
     }
 
-    private int CalculateAnyOverlapWithAnotherShape()
+    private int CalculateAnyOverlapWithAnotherShape(float xPositionAlteration = 0.0f, float yPositionAlteration = 0.0f)
     {
         Square[] squares = GetComponentsInChildren<Square>();
         int[] numberOfOverlapsPerColumn = new int[squares.Length];
         int largestOverlap = 0;
         for (int i = 0; i < squares.Length; i++)
         {
-            int xIndexPosition = (int)((squares[i].GetXCoordinate() - 0.5f) / 0.5f);
-            int yIndexPosition = (int)((squares[i].GetYCoordinate() - 0.5f) / 0.5f);
+            int xIndexPosition = (int)((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f);
+            int yIndexPosition = (int)((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f);
+            // Debug.Log(xIndexPosition);
+            // Debug.Log(yIndexPosition);
             int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
+            // Debug.Log(squareStatus);
             if (squareStatus == 1)
             {
                 numberOfOverlapsPerColumn[i] += 1;
