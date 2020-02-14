@@ -64,9 +64,15 @@ public class Shape : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow)){
             float xDifference = Input.GetKeyDown(KeyCode.RightArrow) ? 0.5f : -0.5f;
+            CalculateAnyOverlapWithAnotherShape();
             float currentXPosition = transform.position.x;
             float newXPosition = clampXPositionWithinGameSpace(currentXPosition + xDifference);
             MoveShape(newXPosition, transform.position.y, transform.position.z);
+            if (CalculateAnyOverlapWithAnotherShape() > 0)
+            {
+                int overlap = CalculateAnyOverlapWithAnotherShape();
+                MoveShape(transform.position.x  - (overlap * xDifference), transform.position.y, transform.position.z);
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.UpArrow)){
