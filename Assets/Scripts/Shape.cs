@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Shape : MonoBehaviour
 {
@@ -89,9 +90,8 @@ public class Shape : MonoBehaviour
         while (looping)
         {
             int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, yDifference);
-            // Debug.Log("y difference start of loop: " + yDifference);
-            // Debug.Log(overlap);
-            if (overlap == 0 && (transform.position.y + yDifference - (0.5f * widthBelowPivot[rotation])) == 0.75f)
+            Debug.Log("width below pivot" + widthBelowPivot[rotation]);
+            if (overlap == 0 && (transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) == 0.75f)
             {
                 looping = false;
             }
@@ -136,12 +136,11 @@ public class Shape : MonoBehaviour
         int largestOverlap = 0;
         for (int i = 0; i < squares.Length; i++)
         {
-            int xIndexPosition = (int)((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f);
-            int yIndexPosition = (int)((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f);
-            // Debug.Log(xIndexPosition);
-            // Debug.Log(yIndexPosition);
+            int xIndexPosition = (int)Math.Round(((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f), 0);
+            int yIndexPosition = (int)Math.Round(((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f), 0);
+            Debug.Log("x index position: " + xIndexPosition);
+            Debug.Log("y index position: " + yIndexPosition);
             int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
-            // Debug.Log(squareStatus);
             if (squareStatus == 1)
             {
                 numberOfOverlapsPerColumn[i] += 1;
@@ -151,6 +150,7 @@ public class Shape : MonoBehaviour
                 }
             }
         }
+        Debug.Log(largestOverlap);
         return largestOverlap;
     }
 

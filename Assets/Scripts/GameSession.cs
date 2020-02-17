@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameSession : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class GameSession : MonoBehaviour
     {
         CountPositionsOfSquares();
         SpawnNewShape();
-        
     }
 
     // Update is called once per frame
@@ -40,36 +40,23 @@ public class GameSession : MonoBehaviour
         }
         foreach (Square square in squares)
         {
-            int xIndexPosition = (int)((square.GetXCoordinate() - xCoordinateOffset) / 0.5f);
-            int yIndexPosition = (int)((square.GetYCoordinate() - yCoordinateOffset) / 0.5f);
-            Debug.Log("x coordinate: " + square.GetXCoordinate());
-            Debug.Log("y coordinate: " + square.GetYCoordinate());
+            int xIndexPosition = (int)Math.Round(((square.GetXCoordinate() - xCoordinateOffset) / 0.5f), 0);
+            int yIndexPosition = (int)Math.Round(((square.GetYCoordinate() - yCoordinateOffset) / 0.5f), 0);
             positionsOfSquares[xIndexPosition][yIndexPosition] = 1;
         }
-
-        Debug.Log(positionsOfSquares[0][0]);
-        Debug.Log(positionsOfSquares[1][0]);
-        Debug.Log(positionsOfSquares[2][0]);
-        Debug.Log(positionsOfSquares[3][0]);
-        Debug.Log(positionsOfSquares[4][0]);
-        Debug.Log(positionsOfSquares[5][0]);
-        Debug.Log(positionsOfSquares[6][0]);
-        Debug.Log(positionsOfSquares[7][0]);
-        Debug.Log(positionsOfSquares[8][0]);
-        Debug.Log(positionsOfSquares[9][0]);
-
     }
 
     public Shape GetRandomShape()
     {
-        int index = Random.Range(0, availableShapes.Length);
+        int index = UnityEngine.Random.Range(0, availableShapes.Length);
         return availableShapes[index];
     }
 
     public void SpawnNewShape()
     {
         Vector2 spawnPoint = new Vector2(shapeSpawnXCoordinate, shapeSpawnYCoordinate);
-        Instantiate(GetRandomShape(), spawnPoint, Quaternion.identity);
+        // Instantiate(GetRandomShape(), spawnPoint, Quaternion.identity);
+        Instantiate(availableShapes[4], spawnPoint, Quaternion.identity);
     }
 
     public int GetStatusOfPositionInGame(int xIndex, int yIndex)
