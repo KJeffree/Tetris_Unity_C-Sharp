@@ -29,10 +29,14 @@ public class Shape : MonoBehaviour
 
     private void ShapeMovementDown()
     {
-        float currentYPosition = transform.position.y;
-        int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, -0.5f);
-        float newYPosition = currentYPosition - 0.5f + (overlap * 0.5f);
-        MoveShape(transform.position.x, newYPosition, transform.position.z);
+        if (transform.position.y - (0.5f * widthBelowPivot[rotation]) > 0.25f)
+        {
+            float currentYPosition = transform.position.y;
+            int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, -0.5f);
+            float newYPosition = currentYPosition - 0.5f + (overlap * 0.5f);
+            MoveShape(transform.position.x, newYPosition, transform.position.z);
+        }
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -54,7 +58,7 @@ public class Shape : MonoBehaviour
             Destroy(GetComponent<Shape>());
             gameSession.CountPositionsOfSquares();
             gameSession.SpawnNewShape();
-            Debug.Log("New Shape");
+
         }
         stopMovement = false;
     }
@@ -93,24 +97,18 @@ public class Shape : MonoBehaviour
             int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, yDifference);
             if (overlap == 0 && (transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) == 0.25f)
             {
-                Debug.Log("first if called");
                 looping = false;
             } else if (overlap != 0)
             {
-                Debug.Log("second if called");
                 looping = false;
                 yDifference += 0.5f;
             } else {
-                Debug.Log("third if called");
                 yDifference -= 0.5f;
             }
 
         }
-        // Debug.Log("y difference end of loop: " + yDifference);
-
-        MoveShape(transform.position.x, transform.position.y + yDifference, transform.position.z);
         CancelInvoke("ShapeMovementDown");
-        // gameSession.CountPositionsOfSquares();
+        MoveShape(transform.position.x, transform.position.y + yDifference, transform.position.z);
     }
 
 
@@ -140,8 +138,6 @@ public class Shape : MonoBehaviour
         {
             int xIndexPosition = (int)Math.Round(((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f), 0);
             int yIndexPosition = (int)Math.Round(((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f), 0);
-            // Debug.Log("x index position: " + xIndexPosition);
-            // Debug.Log("y index position: " + yIndexPosition);
             int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
             if (squareStatus == 1)
             {
@@ -152,7 +148,6 @@ public class Shape : MonoBehaviour
                 }
             }
         }
-        // Debug.Log(largestOverlap);
         return largestOverlap;
     }
 

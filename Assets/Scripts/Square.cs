@@ -17,7 +17,6 @@ public class Square : MonoBehaviour
     }
 
     public float GetXCoordinate(){
-        // Debug.Log(transform.position.x);
         return transform.position.x;
     }
 

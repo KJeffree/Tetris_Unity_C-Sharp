@@ -55,8 +55,8 @@ public class GameSession : MonoBehaviour
     public void SpawnNewShape()
     {
         Vector2 spawnPoint = new Vector2(shapeSpawnXCoordinate, shapeSpawnYCoordinate);
-        // Instantiate(GetRandomShape(), spawnPoint, Quaternion.identity);
-        Instantiate(availableShapes[4], spawnPoint, Quaternion.identity);
+        Instantiate(GetRandomShape(), spawnPoint, Quaternion.identity);
+        // Instantiate(availableShapes[4], spawnPoint, Quaternion.identity);
     }
 
     public int GetStatusOfPositionInGame(int xIndex, int yIndex)
