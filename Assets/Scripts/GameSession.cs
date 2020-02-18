@@ -10,11 +10,14 @@ public class GameSession : MonoBehaviour
     float shapeSpawnYCoordinate = 8.25f;
 
     [SerializeField] Shape[] availableShapes;
-    [SerializeField] int[][] positionsOfSquares = new int[10][];
+    [SerializeField] List<Square[]> positionsOfSquares = new List<Square[]>();
     // Start is called before the first frame update
     void Start()
     {
-        CountPositionsOfSquares();
+        for(int i = 0; i < 18; i++)
+        {
+            positionsOfSquares.Add(new Square[10]);
+        }
         SpawnNewShape();
     }
 
@@ -23,7 +26,7 @@ public class GameSession : MonoBehaviour
     {
     }
 
-    public int[] GetPositionsOfSquares(int indexPosition)
+    public Square[] GetPositionsOfSquares(int indexPosition)
     {
         return positionsOfSquares[indexPosition];
     }
@@ -33,16 +36,72 @@ public class GameSession : MonoBehaviour
         Square[] squares = FindObjectsOfType<Square>();
         float xCoordinateOffset = 0.5f;
         float yCoordinateOffset = 0.5f;
-        for(int i = 0; i < positionsOfSquares.Length; i++)
-        {
-            positionsOfSquares[i] = new int[18];
-            
-        }
         foreach (Square square in squares)
         {
             int xIndexPosition = (int)Math.Round(((square.GetXCoordinate() - xCoordinateOffset) / 0.5f), 0);
             int yIndexPosition = (int)Math.Round(((square.GetYCoordinate() - yCoordinateOffset) / 0.5f), 0);
-            positionsOfSquares[xIndexPosition][yIndexPosition] = 1;
+            positionsOfSquares[yIndexPosition][xIndexPosition] = square;
+        }
+        FindAndRemoveRowsIfFull();
+    }
+
+    public void FindAndRemoveRowsIfFull()
+    {
+        List<int> fullRowsIndex = FindFullRows();
+        foreach (int index in fullRowsIndex)
+        {
+            MoveSquaresDownFromAboveIndex(index);
+        }
+        int counter = 0;
+        foreach (int index in fullRowsIndex)
+        {
+            RemoveFullRows(index - counter);
+            counter++;
+        }
+    }
+
+    public List<int> FindFullRows()
+    {
+        List<int> fullRowIndexes = new List<int>();
+        for (int i = 0; i < 18; i++)
+        {
+            bool full = true;
+            foreach (Square square in positionsOfSquares[i])
+            {
+                if (square == null)
+                {
+                    full = false;
+                }
+            }
+            if (full)
+            {
+                fullRowIndexes.Add(i);
+            }
+        }
+        return fullRowIndexes;
+    }
+
+    public void RemoveFullRows(int index)
+    {
+        foreach(Square square in positionsOfSquares[index])
+        {
+            Destroy(square.gameObject);
+        }
+        positionsOfSquares.RemoveAt(index);
+        positionsOfSquares.Add(new Square[10]);
+    }
+
+    public void MoveSquaresDownFromAboveIndex(int index)
+    {
+        for (int i = index + 1; i < positionsOfSquares.Count; i++)
+        {
+            foreach (Square square in positionsOfSquares[i])
+            {
+                if (square != null)
+                {
+                    square.transform.position = new Vector2(square.transform.position.x, square.transform.position.y - 0.5f);
+                }
+            }
         }
     }
 
@@ -65,6 +124,6 @@ public class GameSession : MonoBehaviour
         {
             return -1;
         }
-        return positionsOfSquares[xIndex][yIndex];
+        return positionsOfSquares[yIndex][xIndex] == null ? 0 : 1;
     }
 }

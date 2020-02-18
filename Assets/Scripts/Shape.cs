@@ -58,7 +58,6 @@ public class Shape : MonoBehaviour
             Destroy(GetComponent<Shape>());
             gameSession.CountPositionsOfSquares();
             gameSession.SpawnNewShape();
-
         }
         stopMovement = false;
     }
