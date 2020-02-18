@@ -54,6 +54,7 @@ public class Shape : MonoBehaviour
             Destroy(GetComponent<Shape>());
             gameSession.CountPositionsOfSquares();
             gameSession.SpawnNewShape();
+            Debug.Log("New Shape");
         }
         stopMovement = false;
     }
@@ -90,16 +91,17 @@ public class Shape : MonoBehaviour
         while (looping)
         {
             int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, yDifference);
-            Debug.Log("width below pivot" + widthBelowPivot[rotation]);
-            if (overlap == 0 && (transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) == 0.75f)
+            if (overlap == 0 && (transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) == 0.25f)
             {
+                Debug.Log("first if called");
                 looping = false;
-            }
-            if (overlap != 0)
+            } else if (overlap != 0)
             {
+                Debug.Log("second if called");
                 looping = false;
                 yDifference += 0.5f;
             } else {
+                Debug.Log("third if called");
                 yDifference -= 0.5f;
             }
 
@@ -138,8 +140,8 @@ public class Shape : MonoBehaviour
         {
             int xIndexPosition = (int)Math.Round(((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f), 0);
             int yIndexPosition = (int)Math.Round(((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f), 0);
-            Debug.Log("x index position: " + xIndexPosition);
-            Debug.Log("y index position: " + yIndexPosition);
+            // Debug.Log("x index position: " + xIndexPosition);
+            // Debug.Log("y index position: " + yIndexPosition);
             int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
             if (squareStatus == 1)
             {
@@ -150,7 +152,7 @@ public class Shape : MonoBehaviour
                 }
             }
         }
-        Debug.Log(largestOverlap);
+        // Debug.Log(largestOverlap);
         return largestOverlap;
     }
 
