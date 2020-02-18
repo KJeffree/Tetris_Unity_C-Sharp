@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
+
 
 public class GameSession : MonoBehaviour
 {
@@ -9,6 +11,12 @@ public class GameSession : MonoBehaviour
     float shapeSpawnXCoordinate = 2.75f;
     float shapeSpawnYCoordinate = 8.25f;
 
+    public int[] pointsForNumberOfLines = new int[4];
+
+    public int score = 0;
+
+    int level = 0;
+    [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] Shape[] availableShapes;
     [SerializeField] List<Square[]> positionsOfSquares = new List<Square[]>();
     // Start is called before the first frame update
@@ -24,6 +32,28 @@ public class GameSession : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateScoreText();
+    }
+
+    public void UpdateScoreText()
+    {
+        scoreText.text = score.ToString();
+    }
+
+    public void AddPointsToScore(int points)
+    {
+        score += points;
+    }
+
+    public void LevelUp()
+    {
+        level++;
+    }
+
+    public int CalculatePointsToAdd(int numberOfLinesCleared)
+    {
+        Debug.Log(pointsForNumberOfLines[numberOfLinesCleared - 1]);
+        return pointsForNumberOfLines[numberOfLinesCleared - 1] * (level + 1);
     }
 
     public Square[] GetPositionsOfSquares(int indexPosition)
@@ -58,7 +88,13 @@ public class GameSession : MonoBehaviour
             RemoveFullRows(index - counter);
             counter++;
         }
+        if (fullRowsIndex.Count > 0)
+        {
+            int points = CalculatePointsToAdd(fullRowsIndex.Count);
+            AddPointsToScore(points);
+        }
     }
+        
 
     public List<int> FindFullRows()
     {
