@@ -12,6 +12,8 @@ public class Shape : MonoBehaviour
     bool stopMovement = false;
 
     int rotation = 0;
+    
+    public float speed = 1f;
 
     GameSession gameSession;
     // Start is called before the first frame update
@@ -19,21 +21,21 @@ public class Shape : MonoBehaviour
     {
         StartCoroutine(BeginMovement());
         gameSession = FindObjectOfType<GameSession>();
+        speed = gameSession.GetShapeSpeed();
     }
 
     IEnumerator BeginMovement()
     {
         yield return new WaitForSeconds(1);
-        InvokeRepeating("ShapeMovementDown", 0, 1f);
+        InvokeRepeating("ShapeMovementDown", 0, speed);
     }
 
     private void ShapeMovementDown()
     {
-        if (transform.position.y - (0.5f * widthBelowPivot[rotation]) > 0.25f)
+        if (transform.position.y - (0.5f * widthBelowPivot[rotation]) > 0.25f && CalculateAnyOverlapWithAnotherShape(0.0f, -0.5f) == 0)
         {
             float currentYPosition = transform.position.y;
-            int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, -0.5f);
-            float newYPosition = currentYPosition - 0.5f + (overlap * 0.5f);
+            float newYPosition = currentYPosition - 0.5f;
             MoveShape(transform.position.x, newYPosition, transform.position.z);
         }
         
@@ -79,6 +81,9 @@ public class Shape : MonoBehaviour
             float xPosition = clampXPositionWithinGameSpace(transform.position.x);
             float yPosition = transform.position.y;
             MoveShape(xPosition, yPosition, transform.position.z);
+
+            int overlap = CalculateAnyOverlapWithAnotherShape();
+            MoveShape(transform.position.x, transform.position.y + (overlap * 0.5f), transform.position.z);
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -114,6 +119,7 @@ public class Shape : MonoBehaviour
 
     private float clampXPositionWithinGameSpace(float xPosition)
     {
+        Debug.Log("clamping called");
         return Mathf.Clamp(xPosition, 0.25f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 4.75f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
     }
 
@@ -123,8 +129,6 @@ public class Shape : MonoBehaviour
         originalRotation.z -= 90;
         transform.rotation = Quaternion.Euler(originalRotation);
         rotation = rotation < 3 ? rotation + 1 : 0;
-        int overlap = CalculateAnyOverlapWithAnotherShape();
-        MoveShape(transform.position.x, transform.position.y + (overlap * 0.5f), transform.position.z);
         AlterShapeCollider();
     }
 
@@ -137,15 +141,19 @@ public class Shape : MonoBehaviour
         {
             int xIndexPosition = (int)Math.Round(((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f), 0);
             int yIndexPosition = (int)Math.Round(((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f), 0);
-            int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
-            if (squareStatus == 1)
+            if (xIndexPosition > 0 && xIndexPosition < 10)
             {
-                numberOfOverlapsPerColumn[i] += 1;
-                if (numberOfOverlapsPerColumn[i] > largestOverlap)
+                int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
+                if (squareStatus == 1)
                 {
-                    largestOverlap = numberOfOverlapsPerColumn[i];
+                    numberOfOverlapsPerColumn[i] += 1;
+                    if (numberOfOverlapsPerColumn[i] > largestOverlap)
+                    {
+                        largestOverlap = numberOfOverlapsPerColumn[i];
+                    }
                 }
             }
+            
         }
         return largestOverlap;
     }

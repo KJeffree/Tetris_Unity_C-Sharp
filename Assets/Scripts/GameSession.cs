@@ -15,8 +15,13 @@ public class GameSession : MonoBehaviour
 
     public int score = 0;
 
+    public float shapeSpeed = 1f;
+
+    public int numberOfFullLinesCreated = 0;
+
     int level = 0;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] Shape[] availableShapes;
     [SerializeField] List<Square[]> positionsOfSquares = new List<Square[]>();
     // Start is called before the first frame update
@@ -33,11 +38,36 @@ public class GameSession : MonoBehaviour
     void Update()
     {
         UpdateScoreText();
+        UpdateLevelText();
+    }
+
+    public float GetShapeSpeed()
+    {
+        return shapeSpeed;
+    }
+
+    public void IncreaseShapeSpeed()
+    {
+        shapeSpeed -= 0.05f;
     }
 
     public void UpdateScoreText()
     {
         scoreText.text = score.ToString();
+    }
+
+    public void IncreaseNumberOfLinesCreated()
+    {
+        numberOfFullLinesCreated++;
+        if (numberOfFullLinesCreated % 10 == 0)
+        {
+            LevelUp();
+        }
+    }
+
+    public void UpdateLevelText()
+    {
+        levelText.text = level.ToString();
     }
 
     public void AddPointsToScore(int points)
@@ -48,11 +78,11 @@ public class GameSession : MonoBehaviour
     public void LevelUp()
     {
         level++;
+        IncreaseShapeSpeed();
     }
 
     public int CalculatePointsToAdd(int numberOfLinesCleared)
     {
-        Debug.Log(pointsForNumberOfLines[numberOfLinesCleared - 1]);
         return pointsForNumberOfLines[numberOfLinesCleared - 1] * (level + 1);
     }
 
@@ -81,6 +111,7 @@ public class GameSession : MonoBehaviour
         foreach (int index in fullRowsIndex)
         {
             MoveSquaresDownFromAboveIndex(index);
+            IncreaseNumberOfLinesCreated();
         }
         int counter = 0;
         foreach (int index in fullRowsIndex)
