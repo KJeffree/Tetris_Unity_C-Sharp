@@ -119,7 +119,6 @@ public class Shape : MonoBehaviour
 
     private float clampXPositionWithinGameSpace(float xPosition)
     {
-        Debug.Log("clamping called");
         return Mathf.Clamp(xPosition, 0.25f + ((float)(widthsBeforePivot[rotation]) * 0.5f), 4.75f - ((float)(widthsFromPivot[rotation] - 1) * 0.5f));
     }
 
@@ -141,7 +140,7 @@ public class Shape : MonoBehaviour
         {
             int xIndexPosition = (int)Math.Round(((squares[i].GetXCoordinate() - 0.5f + xPositionAlteration) / 0.5f), 0);
             int yIndexPosition = (int)Math.Round(((squares[i].GetYCoordinate() - 0.5f + yPositionAlteration) / 0.5f), 0);
-            if (xIndexPosition > 0 && xIndexPosition < 10)
+            if (xIndexPosition >= 0 && xIndexPosition < 10)
             {
                 int squareStatus = gameSession.GetStatusOfPositionInGame(xIndexPosition, yIndexPosition);
                 if (squareStatus == 1)
