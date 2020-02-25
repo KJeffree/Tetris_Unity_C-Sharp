@@ -99,9 +99,13 @@ public class Shape : MonoBehaviour
         while (looping)
         {
             int overlap = CalculateAnyOverlapWithAnotherShape(0.0f, yDifference);
-            if (overlap == 0 && (transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) == 0.25f)
+            if (overlap == 0 && (transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) <= 0.25f)
             {
                 looping = false;
+                if ((transform.position.y - (0.5f * widthBelowPivot[rotation]) + yDifference) < 0.25f)
+                {
+                    yDifference += 0.5f;
+                }
             } else if (overlap != 0)
             {
                 looping = false;
