@@ -69,7 +69,7 @@ public class GameSession : MonoBehaviour
     public void IncreaseNumberOfLinesCreated()
     {
         numberOfFullLinesCreated++;
-        if (numberOfFullLinesCreated % 10 == 0)
+        if (numberOfFullLinesCreated % 8 == 0)
         {
             LevelUp();
         }
