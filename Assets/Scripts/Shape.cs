@@ -9,6 +9,8 @@ public class Shape : MonoBehaviour
     [SerializeField] int[] widthsBeforePivot;
     [SerializeField] int[] widthBelowPivot;
 
+    [SerializeField] Sprite shapeImage;
+
     bool stopMovement = false;
 
     int rotation = 0;
@@ -28,6 +30,11 @@ public class Shape : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         InvokeRepeating("ShapeMovementDown", 0, speed);
+    }
+
+    public Sprite GetSprite()
+    {
+        return shapeImage;
     }
 
     private void ShapeMovementDown()

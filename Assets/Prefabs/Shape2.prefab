@@ -72,6 +72,8 @@ MonoBehaviour:
   widthsFromPivot: 02000000010000000100000001000000
   widthsBeforePivot: 01000000010000000200000001000000
   widthBelowPivot: 01000000020000000100000001000000
+  shapeImage: {fileID: 21300000, guid: 534f761de594844b8958e74dd62774c2, type: 3}
+  speed: 1
 --- !u!1 &3675003768089906536
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,10 @@ public class GameSession : MonoBehaviour
     public int numberOfFullLinesCreated = 0;
 
     int level = 0;
+
+    Shape nextShape;
+
+    [SerializeField] GameObject nextShapeImage;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] Shape[] availableShapes;
@@ -31,6 +35,7 @@ public class GameSession : MonoBehaviour
         {
             positionsOfSquares.Add(new Square[10]);
         }
+        SetNewNextShape();
         SpawnNewShape();
     }
 
@@ -39,6 +44,11 @@ public class GameSession : MonoBehaviour
     {
         UpdateScoreText();
         UpdateLevelText();
+    }
+
+    public void UpdateNextShapeImage()
+    {
+        nextShapeImage.GetComponent<UnityEngine.UI.Image>().sprite = nextShape.GetSprite();
     }
 
     public float GetShapeSpeed()
@@ -178,11 +188,18 @@ public class GameSession : MonoBehaviour
         return availableShapes[index];
     }
 
+    public void SetNewNextShape()
+    {
+        nextShape = GetRandomShape();
+    }
+
     public void SpawnNewShape()
     {
         Vector2 spawnPoint = new Vector2(shapeSpawnXCoordinate, shapeSpawnYCoordinate);
-        Instantiate(GetRandomShape(), spawnPoint, Quaternion.identity);
-        // Instantiate(availableShapes[4], spawnPoint, Quaternion.identity);
+        Instantiate(nextShape, spawnPoint, Quaternion.identity);
+        SetNewNextShape();
+        UpdateNextShapeImage();
+
     }
 
     public int GetStatusOfPositionInGame(int xIndex, int yIndex)
