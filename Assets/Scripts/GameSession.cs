@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using TMPro;
+using System;
 
 
 public class GameSession : MonoBehaviour
@@ -184,7 +184,17 @@ public class GameSession : MonoBehaviour
 
     public Shape GetRandomShape()
     {
-        int index = UnityEngine.Random.Range(0, availableShapes.Length);
+        bool sameShape = true;
+        int index = 0;
+        while(sameShape)
+        {
+            index = UnityEngine.Random.Range(0, availableShapes.Length);
+            if (availableShapes[index] != nextShape)
+            {
+                sameShape = false;
+            }
+        }
+        
         return availableShapes[index];
     }
 
